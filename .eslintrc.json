@@ -1,0 +1,12 @@
+{
+    "extends": ["airbnb", "next/core-web-vitals", "prettier"],
+    "rules": {
+      "quotes": "off",
+      "react/jsx-one-expression-per-line": "off",
+      "react/jsx-curly-brace-presence": "off",
+      "react/jsx-filename-extension": "off",
+      "react/require-default-props": "off",
+      "import/extensions": "off"
+    }
+  }
+  

@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+/* -- animation -- */
+.animateUp {
+  opacity: 0;
+  animation-name: animateUp;
+  animation-duration: 0.6s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  display: flex;
+}
+
+@keyframes animateUp {
+  0% {
+    transform: translateY(0px) translateX(100px);
+    opacity: 0;
+    border-radius: 0% 0% 100% 100% / 100% 0% 100% 0%;
+  }
+
+  100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 1;
+    border-radius: 0% 100% 0% 100% / 100% 0% 100% 0%;
+  }
+}
+
+.active {
+  text-decoration: underline;
+}

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import Modal from '../Modal';
 import Trailer from '../Trailer';
+import FilterBlur from '../Modal/FilterBlur';
 
 interface MovieCardProps {
   movieInfo: any;
@@ -27,12 +28,16 @@ export default function MovieCard({ movieInfo, index }: MovieCardProps) {
     : `/not-found.jpeg`;
 
   const { title, id } = movieInfo;
-  const [leTrailer, setLeTrailer] = useState('rien');
+  const [trailerUrl, setTraiterUrl] = useState('dQw4w9WgXcQ');
 
   const handleClick = async () => {
     const fetchedMovie = await getMovie(id);
-    setLeTrailer(fetchedMovie.results[0]?.key ?? 'dQw4w9WgXcQ');
+    setTraiterUrl(fetchedMovie.results[0]?.key ?? 'dQw4w9WgXcQ');
     setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -43,14 +48,18 @@ export default function MovieCard({ movieInfo, index }: MovieCardProps) {
         src={imgMovie}
         alt={`image ${index}`}
         onClick={handleClick}
-        className='cursor-pointer bg-white object-cover p-3 shadow-lg dark:bg-slate-800'
+        className='cursor-pointer bg-white object-cover p-0 shadow-lg transition duration-300 ease-in-out hover:brightness-125 hover:drop-shadow-2xl dark:bg-gray-950'
+        style={{ animationDelay: `${index * 0.05}s`, animationDuration: '1s' }}
       />
 
       {showModal &&
         createPortal(
-          <Modal onClose={() => setShowModal(false)} title={title}>
-            <Trailer trailer={leTrailer} />
-          </Modal>,
+          <>
+            <FilterBlur onClose={closeModal} />
+            <Modal onClose={closeModal} title={title}>
+              <Trailer trailerUrl={trailerUrl} />
+            </Modal>
+          </>,
           document.body
         )}
     </>

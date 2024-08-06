@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test button theme mode renders the trailer unchanged 1`] = `
+<div>
+  <iframe
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen=""
+    class="h-96 w-full"
+    frameborder="0"
+    src="https://www.youtube.com/embed/shrek"
+    title="YouTube video player"
+  />
+</div>
+`;

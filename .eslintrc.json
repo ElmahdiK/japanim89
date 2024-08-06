@@ -1,12 +1,27 @@
 {
-    "extends": ["airbnb", "next/core-web-vitals", "prettier"],
-    "rules": {
-      "quotes": "off",
-      "react/jsx-one-expression-per-line": "off",
-      "react/jsx-curly-brace-presence": "off",
-      "react/jsx-filename-extension": "off",
-      "react/require-default-props": "off",
-      "import/extensions": "off"
-    }
+  "extends": ["airbnb", "next/core-web-vitals", "prettier"],
+  "rules": {
+    "quotes": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-curly-brace-presence": "off",
+    "react/jsx-filename-extension": "off",
+    "react/require-default-props": "off",
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "test.{ts,tsx}", // repos with a single test file
+          "test-*.{ts,tsx}", // repos with multiple top-level test files
+          "**/*{.,_}{test,spec}.{ts,tsx}", // tests where the extension or filename suffix denotes that it is a test
+          "**/jest.config.ts", // jest config
+          "**/jest.setup.ts" // jest setup
+        ],
+        "optionalDependencies": false
+      }
+    ]
+  },
+  "env": {
+    "jest": true
   }
-  
+}

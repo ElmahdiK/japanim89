@@ -1,16 +1,18 @@
 'use client';
 
 import SearchBar from '../SearchBar';
-import ButtonThemeMode from '../Buttons/ButtonThemeMode';
 
 interface HeaderActionProps {
   onSearch: () => void;
+  suggestMovies: string[];
 }
-export default function HeaderActions({ onSearch }: HeaderActionProps) {
+export default function HeaderActions({
+  onSearch,
+  suggestMovies,
+}: HeaderActionProps) {
   return (
-    <div className='flex gap-6 '>
-      <SearchBar onSearch={onSearch} />
-      <ButtonThemeMode />
+    <div className='flex items-center gap-6'>
+      <SearchBar onSearch={onSearch} suggestMovies={suggestMovies} />
     </div>
   );
 }

@@ -3,7 +3,7 @@ interface GenreProps {
   name: string;
 }
 
-export type MovieProps = {
+export default interface MovieProps {
   id: number;
   title: string;
   poster_path: string;
@@ -13,17 +13,4 @@ export type MovieProps = {
   vote_average: number;
   vote_count: number;
   genres: GenreProps[];
-};
-
-export type MovieListProps = {
-  page: number;
-  results: MovieProps[];
-  total_pages: number;
-  total_results: number;
-};
-
-export type MovieDetailProps = {
-  movie: MovieProps;
-  similarMovies: MovieListProps;
-  recommendedMovies: MovieListProps;
-};
+}

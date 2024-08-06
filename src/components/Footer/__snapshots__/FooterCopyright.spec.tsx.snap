@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test button theme mode renders the footer copyright unchanged 1`] = `
+<div>
+  <a
+    class="link p-2 "
+    href="./"
+  >
+    © 2024 japanim89
+  </a>
+</div>
+`;

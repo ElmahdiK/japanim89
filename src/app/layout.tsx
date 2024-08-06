@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReactNode } from 'react';
-import Footer from '@/components/Footer';
 import ThemeProvider from './theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,12 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <head />
+      <head>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+      </head>
       <body className={inter.className}>
-        <ThemeProvider>
-          {children}
-          <Footer />
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

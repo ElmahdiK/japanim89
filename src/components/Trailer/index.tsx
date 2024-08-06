@@ -1,14 +1,16 @@
 'use client';
 
 interface TrailerProps {
-  trailer: string;
+  trailerUrl: string;
 }
 
-export default function Trailer({ trailer }: TrailerProps) {
+export const defaultYoutubeURL = 'https://www.youtube.com/embed';
+
+export default function Trailer({ trailerUrl }: TrailerProps) {
   return (
     <iframe
       className='h-96 w-full'
-      src={`https://www.youtube.com/embed/${trailer}`}
+      src={`${defaultYoutubeURL}/${trailerUrl}`}
       title='YouTube video player'
       frameBorder='0'
       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'

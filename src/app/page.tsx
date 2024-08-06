@@ -1,34 +1,30 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import Movies from '@/components/Movies';
-import { MovieProps, MovieListProps } from '@/types/movies';
 import { ThemeContext } from '@/app/theme-provider';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import MovieProps from '@/types/movies';
+import Loading from './loading';
 
-async function discoverMovies(page: number): Promise<MovieProps[] | null> {
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&page=${page}&sort_by=popularity.desc&with_keywords=4344|6027`
-    );
-
-    const data: MovieListProps = await response.json();
-    return data.results;
-  } catch (error: unknown) {
-    console.error(`error:${error}`);
-  }
-
-  return null;
+interface MovieListProps {
+  page: number;
+  results: MovieProps[] | null;
 }
 
-async function getMovies(query: string): Promise<MovieProps[] | null> {
+async function getMovies(
+  query: string,
+  page: number
+): Promise<MovieListProps | null> {
   try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${query}`
-    );
+    const BASE_URL_API = 'https://api.themoviedb.org/3';
+    const section = query ? 'search' : 'discover';
+    const queryMovie = `${BASE_URL_API}/${section}/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&page=${page}&sort_by=popularity.desc${query && `&query=${query}`}`;
+    const response = await fetch(queryMovie);
 
     const data: MovieListProps = await response.json();
-    return data.results;
+    return data;
   } catch (error: unknown) {
     console.error(`error:${error}`);
   }
@@ -37,18 +33,18 @@ async function getMovies(query: string): Promise<MovieProps[] | null> {
 }
 
 export default function Page() {
+  const cardHeight = 150;
   const { darkMode } = useContext(ThemeContext);
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [page, setPage] = useState(1);
+  const [searchTerms, setSearchTerms] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const loadDiscoverMovies = async () => {
       setIsLoading(true);
-      const fetchDiscoverMovies = await discoverMovies(page);
-      if (fetchDiscoverMovies) {
-        setMovies([...movies, ...fetchDiscoverMovies]);
-      }
+      const { results } = await getMovies(searchTerms || '', page);
+      if (results) setMovies([...movies, ...results]);
       setIsLoading(false);
     };
 
@@ -56,10 +52,8 @@ export default function Page() {
   }, [page]);
 
   // On scroll, call discover movies but with the next page
-
   useEffect(() => {
     const detectBottomOfPage = () => {
-      const cardHeight = 200;
       // console.log(
       //   window.innerHeight,
       //   window.scrollY,
@@ -85,20 +79,30 @@ export default function Page() {
   }, [isLoading, page]);
 
   const handleSearch = async (searchTerm: string) => {
-    const fetchedMovies = await getMovies(searchTerm);
-    if (fetchedMovies) {
-      setMovies(fetchedMovies);
+    setPage(1);
+    setSearchTerms(searchTerm);
+    const { results } = await getMovies(searchTerms || '', page);
+    if (results) {
+      setMovies(results);
     }
   };
 
   return (
     <div
-      className={`${darkMode} 0 relative flex h-full h-screen flex-col bg-slate-50 dark:bg-slate-700`}
+      className={`${darkMode} 0 relative flex h-full h-screen flex-col bg-slate-50 dark:bg-gray-950`}
     >
       {/* @ts-ignore */}
-      <Header onSearchMovie={handleSearch} />
+      <Header
+        onSearchMovie={handleSearch}
+        suggestMovies={movies.slice(0, 5)}
+        results={movies.length}
+      />
 
-      <Movies movies={movies} />
+      <Suspense fallback={<Loading />}>
+        <Movies movies={movies} />
+      </Suspense>
+
+      <Footer />
     </div>
   );
 }

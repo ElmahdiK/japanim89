@@ -1,12 +1,13 @@
 'use client';
 
+import MovieProps from '@/types/movies';
 import HeaderActions from './HeaderActions';
 import HeaderLogo from './HeaderLogo';
 import IconButtonThemeMode from '../IconButton/IconButtonThemeMode';
 
 interface HeaderProps {
   onSearchMovie?: () => void;
-  suggestMovies: string[];
+  suggestMovies: MovieProps[];
   results: number;
 }
 export default function Header({

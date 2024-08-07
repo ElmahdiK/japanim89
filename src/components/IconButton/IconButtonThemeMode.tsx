@@ -5,17 +5,23 @@ import { useContext } from 'react';
 import Image from 'next/image';
 
 export default function IconButtonThemeMode() {
-  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
 
   return (
-    <Image
-      src={darkMode === 'light' ? 'light.svg' : 'dark.svg'}
-      alt='Vercel Logo'
-      className='cursor-pointer dark:invert'
-      width={24}
-      height={24}
-      priority
-      onClick={toggleDarkMode}
-    />
+    <>
+      <Image
+        src={context.darkMode === 'light' ? 'light.svg' : 'dark.svg'}
+        alt='Vercel Logo'
+        className='cursor-pointer dark:invert'
+        width={24}
+        height={24}
+        priority
+        onClick={context.toggleDarkMode}
+      />
+      {context.darkMode}
+    </>
   );
 }

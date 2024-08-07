@@ -1,19 +1,18 @@
 'use client';
 
+import MovieProps from '@/types/movies';
 import React, { useState } from 'react';
 
 interface SearchBarProps {
-  onSearch: () => void;
-  suggestMovies: string[];
+  onSearch: any;
+  suggestMovies: MovieProps[];
 }
 
 export default function SearchBar({ onSearch, suggestMovies }: SearchBarProps) {
   const [query, setQuery] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const handleInputChange = (
-    e: React.MouseEvent<HTMLInputElement> | undefined
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e) {
       e.preventDefault();
 
@@ -26,9 +25,10 @@ export default function SearchBar({ onSearch, suggestMovies }: SearchBarProps) {
       }
     }
   };
-  const handleClick = (e: React.MouseEvent<HTMLInputElement> | undefined) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    onSearch(e.target.textContent);
+    const target = e.target as HTMLElement;
+    onSearch(target.textContent);
     if (showSuggestions) setShowSuggestions(false);
   };
 
@@ -48,8 +48,11 @@ export default function SearchBar({ onSearch, suggestMovies }: SearchBarProps) {
         className={`absolute left-0 right-0 z-20 mt-1 list-none bg-slate-100 px-4 py-2 outline-offset-0 dark:bg-gray-800 dark:text-gray-400 ${!showSuggestions && 'hidden'}`}
       >
         {suggestMovies.map((movie) => (
-          <li key={movie.id} onClick={handleClick} className='border-b-1 py-2'>
-            {movie.title}
+          <li key={movie.id} className='border-b-1 py-2'>
+            {/* <button onClick={handleClick} onKeyDown={handleClick} type='button'> */}
+            <button onClick={handleClick} type='button'>
+              {movie.title}
+            </button>
           </li>
         ))}
       </ul>

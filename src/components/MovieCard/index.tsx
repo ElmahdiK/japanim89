@@ -49,7 +49,7 @@ export default function MovieCard({ movieInfo, index }: MovieCardProps) {
         alt={`image ${index}`}
         onClick={handleClick}
         className='cursor-pointer bg-white object-cover p-0 shadow-lg transition duration-300 ease-in-out hover:brightness-125 hover:drop-shadow-2xl dark:bg-gray-950'
-        style={{ animationDelay: `${index * 0.05}s`, animationDuration: '1s' }}
+        // style={{ animationDelay: `${index * 0.05}s`, animationDuration: '1s' }}
       />
 
       {showModal &&

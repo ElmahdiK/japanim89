@@ -73,27 +73,27 @@ export default function Page() {
   const handleClick = () => setPage(page + 1);
 
   return (
-    <div
-      className={`${context.darkMode} 0 relative flex h-full h-screen flex-col bg-slate-50 dark:bg-gray-950`}
-    >
-      {/* @ts-ignore */}
-      <Header
-        onSearchMovie={handleSearch}
-        suggestMovies={movies.slice(0, 5)}
-        results={movies.length}
-      />
-      <button
-        type='button'
-        onClick={handleClick}
-        className='bg-transparent p-4 font-semibold dark:text-gray-300'
-      >
-        {isLoading ? 'Loading...' : 'Click here to load more results!'}
-      </button>
-      <Suspense fallback={<Loading />}>
-        <Movies movies={movies} />
-      </Suspense>
+    <div className={context.darkMode}>
+      <div className='0 relative flex h-full h-screen flex-col bg-slate-50 dark:bg-gray-950'>
+        {/* @ts-ignore */}
+        <Header
+          onSearchMovie={handleSearch}
+          suggestMovies={movies.slice(0, 5)}
+          results={movies.length}
+        />
+        <button
+          type='button'
+          onClick={handleClick}
+          className='bg-transparent p-4 font-semibold dark:text-gray-300'
+        >
+          {isLoading ? 'Loading...' : 'Click here to load more results!'}
+        </button>
+        <Suspense fallback={<Loading />}>
+          <Movies movies={movies} />
+        </Suspense>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }

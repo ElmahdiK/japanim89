@@ -32,7 +32,10 @@ const getMovies = async (
 };
 
 export default function Page() {
-  const darkMode = useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
 
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [page, setPage] = useState(1);
@@ -71,7 +74,7 @@ export default function Page() {
 
   return (
     <div
-      className={`${darkMode} 0 relative flex h-full h-screen flex-col bg-slate-50 dark:bg-gray-950`}
+      className={`${context.darkMode} 0 relative flex h-full h-screen flex-col bg-slate-50 dark:bg-gray-950`}
     >
       {/* @ts-ignore */}
       <Header
@@ -79,11 +82,15 @@ export default function Page() {
         suggestMovies={movies.slice(0, 5)}
         results={movies.length}
       />
-      <button type='button' onClick={handleClick} className='p-4 font-semibold'>
-        {isLoading ? 'Loading...' : 'Click here to load more results!'}
-      </button>
       <Suspense fallback={<Loading />}>
         <Movies movies={movies} />
+        <button
+          type='button'
+          onClick={handleClick}
+          className='p-4 font-semibold'
+        >
+          {isLoading ? 'Loading...' : 'Click here to load more results!'}
+        </button>
       </Suspense>
 
       <Footer />

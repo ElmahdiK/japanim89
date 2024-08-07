@@ -9,7 +9,6 @@ export default function IconButtonThemeMode() {
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
-  /* {context.darkMode} */
 
   return (
     <Image

@@ -1,7 +1,6 @@
 'use client';
 
 import MovieProps from '@/types/movies';
-// import HeaderActions from './HeaderActions';
 import HeaderLogo from './HeaderLogo';
 import IconButtonThemeMode from '../IconButton/IconButtonThemeMode';
 import SearchBar from '../SearchBar';
@@ -17,7 +16,9 @@ export default function Header({
   results = 0,
 }: HeaderProps) {
   return (
-    <header className='flex flex-col items-center justify-between gap-6 bg-white p-4 align-middle shadow-xl dark:bg-gray-900 sm:flex-row'>
+    <header
+      className={`flex flex-col items-center justify-between gap-6 bg-white p-4 align-middle shadow-xl dark:bg-gray-900 sm:flex-row`}
+    >
       <HeaderLogo color='text-red-700' />
 
       <div className='flex items-center gap-6'>

@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Suspense,
-  useContext,
-  useEffect,
-  useState,
-  useRef,
-  MutableRefObject,
-} from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import Movies from '@/components/Movies';
 import { ThemeContext } from '@/app/theme-provider';
 import Header from '@/components/Header';
@@ -17,13 +10,13 @@ import Loading from './loading';
 
 interface MovieListProps {
   page: number;
-  results: MovieProps[] | unknown;
+  results: MovieProps[];
 }
 
 const getMovies = async (
-  query: string,
+  query: string | null,
   page: number
-): Promise<MovieListProps | unknown> => {
+): Promise<MovieListProps | null> => {
   try {
     const BASE_URL_API = 'https://api.themoviedb.org/3';
     const section = query ? 'search' : 'discover';
@@ -35,78 +28,46 @@ const getMovies = async (
   } catch (error: unknown) {
     console.error(`error:${error}`);
   }
-
   return null;
 };
 
 export default function Page() {
-  const elementVisible = useRef(null);
-  const cardHeight = 100;
   const darkMode = useContext(ThemeContext);
+
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [page, setPage] = useState(1);
   const [searchTerms, setSearchTerms] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const checkVisible = (elm: MutableRefObject<HTMLInputElement | null>) => {
-    if (elm.current) {
-      const rect = elm.current?.getBoundingClientRect();
-      const viewHeight = Math.max(
-        document.documentElement.clientHeight,
-        window.innerHeight
-      );
-      return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-    }
-    return false;
-  };
+  const loadDiscoverMovies = async () => {
+    setIsLoading(true);
 
-  const detectBottomOfPage = () => {
-    // console.log(
-    //   window.innerHeight,
-    //   window.scrollY,
-    //   window.innerHeight + window.scrollY,
-    //   document.body.scrollHeight,
-    //   isLoading
-    // );
-    // console.log('more data', page, isLoading);
-    if (
-      !isLoading &&
-      (window.innerHeight + window.scrollY + cardHeight >
-        document.body.scrollHeight ||
-        checkVisible(elementVisible))
-    )
-      setPage(page + 1);
+    const response = await getMovies(searchTerms, page);
+    const results = response?.results;
+    // console.log('results ===>', results);
+    if (results) setMovies([...movies, ...results]);
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    const loadDiscoverMovies = async () => {
-      setIsLoading(true);
-      const { results }: any = await getMovies(searchTerms || '', page);
-      if (results) setMovies([...movies, ...results]);
-      setIsLoading(false);
-    };
-
     loadDiscoverMovies();
   }, [page]);
 
-  // On scroll, call discover movies but with the next page
-  useEffect(() => {
-    detectBottomOfPage();
-    // window.addEventListener('scroll', detectBottomOfPage);
-    // // Cleanup function
-    // return () => {
-    //   window.removeEventListener('scroll', detectBottomOfPage);
-    // };
-  }, [isLoading, page]);
+  const handleSearch = async (searchTerm?: string | null) => {
+    if (searchTerm) {
+      setSearchTerms(searchTerm);
+      setPage(1);
 
-  const handleSearch = async (searchTerm: string) => {
-    setPage(1);
-    setSearchTerms(searchTerm);
-    const { results }: any = await getMovies(searchTerms || '', page);
-    if (results) {
-      setMovies(results);
+      const response = await getMovies(searchTerms, page);
+      const results = response?.results;
+      if (results) setMovies(results);
+      return results;
     }
+    return undefined;
   };
+
+  const handleClick = () => setPage(page + 1);
 
   return (
     <div
@@ -114,14 +75,15 @@ export default function Page() {
     >
       {/* @ts-ignore */}
       <Header
-        onSearchMovie={() => handleSearch}
+        onSearchMovie={handleSearch}
         suggestMovies={movies.slice(0, 5)}
         results={movies.length}
       />
-
+      <button type='button' onClick={handleClick} className='p-4 font-semibold'>
+        {isLoading ? 'Loading...' : 'Click here to load more results!'}
+      </button>
       <Suspense fallback={<Loading />}>
         <Movies movies={movies} />
-        <h1 ref={elementVisible}>end results</h1>
       </Suspense>
 
       <Footer />

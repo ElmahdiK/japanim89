@@ -1,9 +1,13 @@
 'use client';
 
-export default function HeaderLogo() {
+interface HeaderLogoProps {
+  color: string;
+}
+
+export default function HeaderLogo({ color }: HeaderLogoProps) {
   return (
     <p className='text-2xl font-semibold italic dark:text-white'>
-      Japanim<span className='text-red-700'>89</span>
+      Japanim<span className={color}>89</span>
     </p>
   );
 }

@@ -16,12 +16,15 @@ export default function SearchBar({ onSearch, suggestMovies }: SearchBarProps) {
     if (e) {
       e.preventDefault();
 
-      // @ts-ignore
-      setQuery(e.target.value);
-      // @ts-ignore
-      if (e.target.value.length > 3) {
-        onSearch(e.target.value);
-        if (!showSuggestions) setShowSuggestions(true);
+      if (!e.target.value) setShowSuggestions(false);
+      else {
+        // @ts-ignore
+        setQuery(e.target.value);
+        // @ts-ignore
+        if (e.target.value.length > 3) {
+          onSearch(e.target.value);
+          if (!showSuggestions) setShowSuggestions(true);
+        }
       }
     }
   };
@@ -45,12 +48,16 @@ export default function SearchBar({ onSearch, suggestMovies }: SearchBarProps) {
       />
       <ul
         id='suggest-movies'
-        className={`absolute left-0 right-0 z-20 mt-1 list-none bg-slate-100 px-4 py-2 outline-offset-0 dark:bg-gray-800 dark:text-gray-400 ${!showSuggestions && 'hidden'}`}
+        className={`absolute left-0 right-0 z-20 mt-1 list-none bg-slate-100  outline-offset-0 dark:bg-gray-800 dark:text-gray-400 ${!showSuggestions && 'hidden'}`}
       >
         {suggestMovies.map((movie) => (
-          <li key={movie.id} className='border-b-1 py-2'>
+          <li key={movie.id} className='border-b-slate-500'>
             {/* <button onClick={handleClick} onKeyDown={handleClick} type='button'> */}
-            <button onClick={handleClick} type='button'>
+            <button
+              onClick={handleClick}
+              type='button'
+              className='w-full p-2 text-left hover:bg-slate-600 hover:text-white'
+            >
               {movie.title}
             </button>
           </li>

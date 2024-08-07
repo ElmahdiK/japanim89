@@ -82,15 +82,11 @@ export default function Page() {
         suggestMovies={movies.slice(0, 5)}
         results={movies.length}
       />
+      <button type='button' onClick={handleClick} className='p-4 font-semibold'>
+        {isLoading ? 'Loading...' : 'Click here to load more results!'}
+      </button>
       <Suspense fallback={<Loading />}>
         <Movies movies={movies} />
-        <button
-          type='button'
-          onClick={handleClick}
-          className='p-4 font-semibold'
-        >
-          {isLoading ? 'Loading...' : 'Click here to load more results!'}
-        </button>
       </Suspense>
 
       <Footer />

@@ -19,7 +19,7 @@ export default function NotFound() {
         </Link>
       </p>
       <Image
-        src={`/404.png`}
+        src={`./404.png`}
         alt='Not found'
         className='m-10 flex-1 p-10 shadow-xl'
         width={400}

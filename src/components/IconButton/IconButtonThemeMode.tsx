@@ -9,19 +9,17 @@ export default function IconButtonThemeMode() {
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
+  /* {context.darkMode} */
 
   return (
-    <>
-      <Image
-        src={context.darkMode === 'light' ? 'light.svg' : 'dark.svg'}
-        alt='Vercel Logo'
-        className='cursor-pointer dark:invert'
-        width={24}
-        height={24}
-        priority
-        onClick={context.toggleDarkMode}
-      />
-      {context.darkMode}
-    </>
+    <Image
+      src={`./${context.darkMode === 'light' ? 'light' : 'dark'}.svg`}
+      alt='Vercel Logo'
+      className='cursor-pointer dark:invert'
+      width={24}
+      height={24}
+      priority
+      onClick={context.toggleDarkMode}
+    />
   );
 }

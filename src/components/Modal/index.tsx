@@ -23,7 +23,7 @@ export default function Modal({ onClose, children, title }: MovieModalProps) {
           <span className='flex-1 p-2 text-xl font-bold'>{title}</span>
           <button type='button' onClick={onClose} className='p-2'>
             <Image
-              src='/close.svg'
+              src='./close.svg'
               alt='Vercel Logo'
               className='dark:invert'
               width={24}
